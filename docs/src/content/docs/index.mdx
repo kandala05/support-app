@@ -1,0 +1,63 @@
+---
+title: Support App
+description: AI-powered support portal for tracking platform engineering issues
+template: splash
+hero:
+  tagline: Intelligent issue tracking with AI-assisted documentation and self-resolution
+  actions:
+    - text: Get Started
+      link: /support-app/quick-start/
+      icon: right-arrow
+    - text: View Prototypes
+      link: /support-app/prototypes/
+      variant: minimal
+---
+
+import { Card, CardGrid } from '@astrojs/starlight/components';
+
+## Why Support App?
+
+Traditional issue tracking captures problems but leaves resolution to human knowledge. Support App actively helps users solve issues through intelligent documentation surfacing and AI assistance.
+
+<CardGrid stagger>
+  <Card title="Smart Documentation" icon="document">
+    As users describe issues, relevant documentation surfaces automatically. No more searching - the right docs find you.
+  </Card>
+  <Card title="AI-Powered Assistance" icon="rocket">
+    Claude-powered chat interface understands context, suggests categories, and guides users to solutions.
+  </Card>
+  <Card title="Closed-Loop Learning" icon="approve-check">
+    Track which docs help resolve issues. AI identifies patterns and suggests documentation improvements.
+  </Card>
+  <Card title="Diataxis-Organized" icon="open-book">
+    Documentation follows the proven Diataxis framework: tutorials, how-tos, explanations, and references.
+  </Card>
+</CardGrid>
+
+## Product Phases
+
+| Phase | Focus | Description |
+|-------|-------|-------------|
+| **V0** | Documentation | This site - comprehensive docs with interactive prototypes |
+| **Phase 1** | Basic Tracking | Multi-step issue submission, plane categorization |
+| **Phase 2** | Smart Sidebar | Real-time doc suggestions as users type |
+| **Phase 3** | Chat Interface | Conversational AI for issue creation |
+| **Phase 4** | Analytics | Insights dashboard, pattern detection |
+
+## Documentation Structure
+
+This documentation follows the [Diataxis framework](https://diataxis.fr/):
+
+- **[Explanation](/support-app/explanation/architecture/)** - Understand the architecture and design decisions
+- **[Reference](/support-app/reference/database-schema/)** - Technical specifications and API docs
+- **[How-To Guides](/support-app/how-to/local-setup/)** - Step-by-step task completion
+- **[Tutorials](/support-app/tutorials/first-issue/)** - Learning-oriented walkthroughs
+- **[Prototypes](/support-app/prototypes/)** - Interactive React components demonstrating UX
+
+## Tech Stack
+
+- **Frontend**: Next.js 15, React, TypeScript, Tailwind CSS
+- **Database**: PostgreSQL with Drizzle ORM
+- **AI**: Anthropic Claude via Vercel AI SDK
+- **Infrastructure**: AWS via SST (RDS, Cognito, S3, CloudFront)
+- **Documentation**: Astro + Starlight

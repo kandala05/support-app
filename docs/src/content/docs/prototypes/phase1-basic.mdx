@@ -1,0 +1,100 @@
+---
+title: "Phase 1: Issue Submission"
+description: Interactive prototype of the multi-step issue submission form
+---
+
+import IssueSubmission from '../../../components/prototypes/IssueSubmission.jsx';
+
+This prototype demonstrates the **Phase 1** issue submission form - a multi-step wizard for capturing structured issue data.
+
+## Features Demonstrated
+
+- **Step 1: Context** - Customer and environment selection
+- **Step 2: Category** - Plane selection (primary + secondary)
+- **Step 3: Details** - Title, description, context fields
+- **Step 4: Review** - Confirmation before submission
+
+## Try It Out
+
+<div className="not-content" style={{ background: 'white', borderRadius: '12px', padding: '0', margin: '1rem 0', overflow: 'hidden' }}>
+  <IssueSubmission client:load />
+</div>
+
+## Design Notes
+
+### Multi-Step Wizard
+
+Breaking the form into steps:
+- Reduces cognitive load
+- Enables dynamic filtering (customer → environments)
+- Provides clear progress indication
+- Allows review before submission
+
+### Customer/Environment Selection
+
+- Grid layout for visual selection
+- Environment type badges (dev/qa/staging/prod)
+- Filtered based on customer selection
+
+### Plane Selection
+
+- Card-based selection with icons
+- Color-coded gradients per plane
+- Primary plane required, secondary optional
+- Visual hierarchy distinguishes primary vs secondary
+
+### Context Fields
+
+Dynamic fields based on plane:
+- **App CI/CD**: Pipeline Stage dropdown
+- **EKS**: Component dropdown
+- Other planes: May have different contexts
+
+### Form Validation
+
+- Required fields clearly marked
+- Validation before allowing progression
+- Disabled "Continue" until requirements met
+
+### Review Step
+
+- Read-only summary of all fields
+- Organized by section (Context, Platform Area, Details)
+- Clear submit action
+
+## Implementation Notes
+
+When building V1:
+
+1. Replace mock customer/environment data with API calls
+2. Add authentication (Cognito)
+3. Implement `/api/issues` POST endpoint
+4. Store in PostgreSQL via Drizzle
+5. Generate issue ID (ISS-YYYY-NNNN format)
+6. Add success notification
+
+## UX Considerations
+
+### Progressive Disclosure
+
+- Only show relevant fields
+- Hide secondary options until primary selected
+- Expand details as user progresses
+
+### Error Prevention
+
+- Validate inline before submission
+- Clear error messages
+- Highlight problematic fields
+
+### Mobile Responsiveness
+
+- Cards stack vertically on mobile
+- Form fields full-width
+- Buttons easily tappable
+
+## Related
+
+- [Phase 2: Smart Sidebar](/support-app/prototypes/phase2-smart/) - Next phase
+- [Tutorial: First Issue](/support-app/tutorials/first-issue/) - User guide
+- [Database Schema](/support-app/reference/database-schema/) - Data model

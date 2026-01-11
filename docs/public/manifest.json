@@ -1,0 +1,128 @@
+{
+  "name": "support-app",
+  "version": "1.0.0",
+  "purpose": "AI-powered support portal for tracking platform engineering issues",
+  "repository": "https://github.com/kandala05/support-app",
+  "documentation": {
+    "framework": "diataxis",
+    "sections": {
+      "explanation": {
+        "description": "Conceptual understanding of Support App architecture and design",
+        "pages": [
+          {
+            "title": "Architecture Overview",
+            "path": "/explanation/architecture/",
+            "description": "System design and component architecture"
+          },
+          {
+            "title": "AI Strategy",
+            "path": "/explanation/ai-strategy/",
+            "description": "How AI enhances the support experience"
+          },
+          {
+            "title": "Product Phases",
+            "path": "/explanation/phases/",
+            "description": "Phased approach to building features"
+          }
+        ]
+      },
+      "reference": {
+        "description": "Technical specifications and API documentation",
+        "pages": [
+          {
+            "title": "Database Schema",
+            "path": "/reference/database-schema/",
+            "description": "Complete Drizzle/PostgreSQL schema"
+          },
+          {
+            "title": "API Reference",
+            "path": "/reference/api/",
+            "description": "REST API endpoint documentation"
+          },
+          {
+            "title": "Infrastructure",
+            "path": "/reference/infrastructure/",
+            "description": "SST and AWS resource configuration"
+          }
+        ]
+      },
+      "how-to": {
+        "description": "Task-oriented guides for common operations",
+        "pages": [
+          {
+            "title": "Local Development Setup",
+            "path": "/how-to/local-setup/",
+            "description": "Set up development environment with LocalStack"
+          },
+          {
+            "title": "Troubleshooting",
+            "path": "/how-to/troubleshooting/",
+            "description": "Common issues and solutions"
+          }
+        ]
+      },
+      "tutorials": {
+        "description": "Learning-oriented walkthroughs",
+        "pages": [
+          {
+            "title": "Submitting Your First Issue",
+            "path": "/tutorials/first-issue/",
+            "description": "Step-by-step guide to issue submission"
+          }
+        ]
+      },
+      "prototypes": {
+        "description": "Interactive React prototypes demonstrating UX",
+        "pages": [
+          {
+            "title": "Phase 1: Issue Submission",
+            "path": "/prototypes/phase1-basic/",
+            "description": "Multi-step form wizard prototype"
+          },
+          {
+            "title": "Phase 2: Smart Sidebar",
+            "path": "/prototypes/phase2-smart/",
+            "description": "Real-time documentation suggestions"
+          },
+          {
+            "title": "Phase 3: Conversational AI",
+            "path": "/prototypes/phase3-chat/",
+            "description": "Chat-based issue creation"
+          },
+          {
+            "title": "Phase 4: Analytics",
+            "path": "/prototypes/phase4-analytics/",
+            "description": "Insights and closed-loop learning"
+          }
+        ]
+      }
+    }
+  },
+  "ai_guidance": {
+    "primary_context": [
+      "/explanation/architecture/",
+      "/explanation/ai-strategy/",
+      "/reference/database-schema/",
+      "/reference/api/"
+    ],
+    "coding_standards": "See team-playbook at https://kandala05.github.io/team-playbook/",
+    "tech_stack": {
+      "frontend": "Next.js 15, React, TypeScript, Tailwind CSS",
+      "database": "PostgreSQL with Drizzle ORM",
+      "infrastructure": "AWS via SST",
+      "ai": "Anthropic Claude via Vercel AI SDK",
+      "documentation": "Astro/Starlight"
+    }
+  },
+  "metadata": {
+    "type": "internal-tool",
+    "domain": "platform-engineering",
+    "capabilities": [
+      "issue-tracking",
+      "documentation-search",
+      "ai-assistance",
+      "analytics"
+    ],
+    "last_updated": "2026-01-11"
+  }
+}

@@ -1,0 +1,126 @@
+---
+title: "Phase 2: Smart Documentation Sidebar"
+description: Interactive prototype of real-time documentation suggestions
+---
+
+import SmartSidebar from '../../../components/prototypes/SmartSidebar.jsx';
+
+This prototype demonstrates the **Phase 2** smart documentation sidebar - real-time doc suggestions as users describe their issues.
+
+## Features Demonstrated
+
+- **Real-time Search** - Results appear as you type
+- **Diataxis Categories** - How-To, Explanation, Reference, Tutorial
+- **Relevance Scores** - Confidence percentage for each result
+- **Feedback Tracking** - "Mark as helpful" and dismiss actions
+
+## Try It Out
+
+Type in the description field to see documentation suggestions.
+
+**Try these sample inputs:**
+- "My deployment pipeline keeps timing out"
+- "IAM role permissions not working for my pod"
+- "Deployment fails with error"
+
+<div className="not-content" style={{ background: 'white', borderRadius: '12px', padding: '0', margin: '1rem 0', overflow: 'hidden' }}>
+  <SmartSidebar client:load />
+</div>
+
+## Design Notes
+
+### Sidebar Layout
+
+- **2/3 - 1/3 split** for form and sidebar
+- Sidebar is sticky (follows scroll)
+- Collapsible on mobile
+
+### Search Behavior
+
+- Triggered after **3+ words** in description
+- **800ms debounce** to avoid excessive API calls
+- Shows loading state during search
+- Empty state with helpful prompt
+
+### Result Presentation
+
+**Grouped by Diataxis type:**
+- 📘 **How-To** (blue) - Task-focused guides
+- 💡 **Explanation** (purple) - Conceptual understanding
+- 📄 **Reference** (green) - Specifications
+- 🎓 **Tutorial** (orange) - Learning paths
+
+**Each result shows:**
+- Type icon and label
+- Relevance percentage
+- Title and excerpt
+- Link to full article
+- "Mark as helpful" action
+- Dismiss (X) button
+
+### Feedback Mechanism
+
+When user clicks "Mark as helpful":
+- Visual confirmation (changes to "Marked helpful")
+- Data stored with context (plane, customer, etc.)
+- Used for analytics and improving search
+
+## Implementation Notes
+
+When building V1:
+
+1. Implement `/api/docs/search` endpoint
+2. Index documentation from Astro sites
+3. Start with keyword search, add embeddings later
+4. Store feedback in `doc_feedback` table
+5. Track self-resolution (issue abandoned after marking helpful)
+
+### Search Strategy
+
+**Phase 1 (MVP):**
+```typescript
+// Simple keyword search
+const results = await searchDocs({
+  query: description,
+  planeSlug: selectedPlane,
+  limit: 5
+});
+```
+
+**Phase 2 (Enhanced):**
+```typescript
+// Semantic search with embeddings
+const embedding = await generateEmbedding(description);
+const results = await vectorSearch(embedding, {
+  planeSlug: selectedPlane,
+  threshold: 0.7
+});
+```
+
+## Success Metrics
+
+| Metric | Target |
+|--------|--------|
+| Users marking docs helpful | 30%+ |
+| Self-resolution rate | 15%+ |
+| Search response time | < 1 second |
+
+## UX Considerations
+
+### Non-Blocking
+
+- Sidebar suggestions don't block form submission
+- User can ignore if not helpful
+- Feedback is optional
+
+### Progressive Enhancement
+
+- Works without AI (basic keyword search)
+- Better results with embeddings (future)
+- Degrades gracefully if search fails
+
+## Related
+
+- [Phase 1 Prototype](/support-app/prototypes/phase1-basic/) - Previous phase
+- [Phase 3 Prototype](/support-app/prototypes/phase3-chat/) - Next phase
+- [AI Strategy](/support-app/explanation/ai-strategy/) - Technical approach

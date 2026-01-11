@@ -1,0 +1,165 @@
+---
+title: "Phase 3: Conversational AI"
+description: Interactive prototype of AI-powered chat interface for issue creation
+---
+
+import Conversational from '../../../components/prototypes/Conversational.jsx';
+
+This prototype demonstrates the **Phase 3** conversational AI interface - a chat-based alternative to the structured form.
+
+## Features Demonstrated
+
+- **Mode Selection** - Choose between Form and Chat
+- **Natural Language Input** - Describe issues conversationally
+- **AI Follow-ups** - Smart questions to gather context
+- **Embedded Doc Snippets** - Relevant docs in chat responses
+- **Auto-Categorization** - AI suggests plane/context
+- **Issue Preview** - Structured data extracted for review
+
+## Try It Out
+
+1. Select **"Conversational AI"** mode
+2. Try typing: "My deployment keeps timing out"
+3. Follow the AI's prompts
+4. See how it extracts structured data
+
+<div className="not-content" style={{ background: 'white', borderRadius: '12px', padding: '0', margin: '1rem 0', overflow: 'hidden' }}>
+  <Conversational client:load />
+</div>
+
+## Design Notes
+
+### Mode Selection Screen
+
+- Clear choice between Form and Chat
+- Benefits listed for each option
+- "NEW" badge on Chat to encourage exploration
+- Equal visual weight (no forced default)
+
+### Chat Interface
+
+**Header:**
+- AI assistant avatar with gradient
+- Name and description
+- Back button to mode selection
+
+**Messages:**
+- User messages (dark, right-aligned)
+- AI messages (light, left-aligned)
+- Timestamps for context
+
+**Typing Indicator:**
+- Animated dots during AI "thinking"
+- Provides feedback during wait
+
+### Embedded Components
+
+**Doc Snippets:**
+- Appear inline in AI responses
+- Categorized by Diataxis type
+- Expandable with link to full article
+
+**AI Suggestions:**
+- Blue card with extracted fields
+- "Looks good" / "Let me edit" actions
+- Confidence indication
+
+**Issue Preview:**
+- Green card when ready to submit
+- All extracted fields shown
+- Single submit button
+
+### Conversation Flow
+
+```
+1. User describes issue naturally
+   ↓
+2. AI responds with relevant docs + questions
+   ↓
+3. User provides context (customer, env)
+   ↓
+4. AI suggests categorization
+   ↓
+5. User confirms or edits
+   ↓
+6. AI shows issue preview
+   ↓
+7. User submits
+```
+
+## Implementation Notes
+
+When building V1:
+
+1. Use Vercel AI SDK with `useChat` hook
+2. Implement `/api/chat` streaming endpoint
+3. Configure Claude with tool calling:
+   - `searchDocs` - Find relevant documentation
+   - `categorize` - Suggest plane/context
+   - `findDuplicates` - Check for similar issues
+4. Use `streamUI` for custom components
+
+### Tool Definitions
+
+```typescript
+const tools = {
+  searchDocs: {
+    description: "Search documentation for relevant articles",
+    parameters: z.object({
+      query: z.string(),
+      planeSlug: z.string().optional()
+    }),
+    execute: async ({ query, planeSlug }) => {
+      return await searchDocumentation(query, planeSlug);
+    }
+  },
+  categorize: {
+    description: "Suggest issue categorization",
+    parameters: z.object({
+      description: z.string(),
+      context: z.object({
+        customer: z.string().optional(),
+        environment: z.string().optional()
+      })
+    }),
+    execute: async ({ description, context }) => {
+      // AI determines plane/context from description
+      return suggestCategory(description, context);
+    }
+  }
+};
+```
+
+## Success Metrics
+
+| Metric | Target |
+|--------|--------|
+| Chat mode adoption | 40%+ |
+| Faster than form | 20%+ |
+| Categorization accuracy | 85%+ |
+
+## UX Considerations
+
+### Not Mandatory
+
+- Users can always choose form
+- Chat is an alternative, not replacement
+- Both produce same structured output
+
+### Graceful Fallback
+
+- If AI fails, prompt to use form
+- Don't block issue submission
+- Human review before final submit
+
+### Conversation State
+
+- State persists during session
+- Can go back to mode selection
+- Clear when issue submitted
+
+## Related
+
+- [Phase 2 Prototype](/support-app/prototypes/phase2-smart/) - Previous phase
+- [Phase 4 Prototype](/support-app/prototypes/phase4-analytics/) - Next phase
+- [AI Strategy](/support-app/explanation/ai-strategy/) - Technical approach

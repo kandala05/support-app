@@ -1,0 +1,203 @@
+---
+title: "Phase 4: Analytics Dashboard"
+description: Interactive prototype of insights and closed-loop learning dashboard
+---
+
+import Analytics from '../../../components/prototypes/Analytics.jsx';
+
+This prototype demonstrates the **Phase 4** analytics dashboard - intelligent insights and closed-loop learning.
+
+## Features Demonstrated
+
+- **Summary Statistics** - Key metrics with trends
+- **AI-Generated Insights** - Pattern detection and suggestions
+- **Issue Distribution** - By plane with change indicators
+- **Customer Health** - Status and trend per customer
+- **Documentation Effectiveness** - Which docs actually help
+- **Duplicate Detection** - Similar issue finder
+- **Common Patterns** - Recurring issue types with resolutions
+
+## Try It Out
+
+Explore the dashboard to see different analytics views and AI insights.
+
+<div className="not-content" style={{ background: 'white', borderRadius: '12px', padding: '0', margin: '1rem 0', overflow: 'hidden' }}>
+  <Analytics client:load />
+</div>
+
+## Design Notes
+
+### Summary Statistics
+
+Four key metrics at top:
+- **Total Issues** - Overall volume with trend
+- **Open Issues** - Current backlog
+- **Resolved This Month** - Team productivity
+- **Avg Resolution Time** - Efficiency metric
+
+Each card shows:
+- Value (large, prominent)
+- Trend indicator (↑↓ with percentage)
+- Color coding (green=good, red=attention)
+
+### AI-Generated Insights
+
+Three insight types:
+
+**Pattern Detection (Orange):**
+- Identifies spikes in issue types
+- Shows affected issue IDs
+- Suggests documentation actions
+
+**Documentation Gaps (Blue):**
+- Issues with no helpful docs
+- Candidates for new content
+- Links to related existing docs
+
+**Positive Trends (Green):**
+- Improvements to celebrate
+- Attribution to actions taken
+- Suggestions to replicate success
+
+### Issue Distribution by Plane
+
+Horizontal bar chart:
+- Color-coded by plane
+- Shows count and % change
+- Visual comparison of volume
+
+### Customer Health
+
+Per-customer cards showing:
+- Open issue count
+- Critical issues (red if > 0)
+- Average resolution time
+- Trend direction
+- Status badge (Healthy/Warning)
+
+### Documentation Effectiveness
+
+Table of docs with:
+- Views (total impressions)
+- Helpful marks (positive feedback)
+- Effectiveness ratio (helpful/views)
+- Progress bar visualization
+- Trend indicator
+
+**Thresholds:**
+- > 30% = Green (effective)
+- 15-30% = Yellow (needs review)
+- < 15% = Red (rewrite candidate)
+
+### Duplicate Detection
+
+When analyzing new issue:
+- Shows similar past issues
+- Similarity percentage
+- Status (resolved/in-progress)
+- Resolution notes if available
+- "Link to this issue" action
+
+### Common Patterns
+
+Recurring issue types:
+- Pattern name and frequency
+- Associated plane
+- Average resolution time
+- Common resolution text
+
+## Implementation Notes
+
+When building V1:
+
+### Analytics Queries
+
+```typescript
+// Summary stats
+const summary = await db.query.issues.findMany({
+  where: gte(issues.createdAt, startOfMonth),
+});
+
+// Plane distribution
+const distribution = await db
+  .select({
+    plane: planes.name,
+    count: count()
+  })
+  .from(issues)
+  .leftJoin(planes, eq(issues.primaryPlaneId, planes.id))
+  .groupBy(planes.name);
+
+// Doc effectiveness
+const effectiveness = await db
+  .select({
+    docUrl: docFeedback.docUrl,
+    views: count(),
+    helpful: count().filter(docFeedback.markedHelpful)
+  })
+  .from(docFeedback)
+  .groupBy(docFeedback.docUrl);
+```
+
+### AI Insights Generation
+
+Run nightly job to:
+1. Aggregate issue patterns
+2. Compare to previous period
+3. Generate insights via Claude
+4. Store for dashboard display
+
+```typescript
+const insights = await generateInsights({
+  recentIssues: last7Days,
+  docFeedback: last30Days,
+  customerMetrics: current
+});
+```
+
+### Duplicate Detection
+
+Use vector similarity:
+```typescript
+const embedding = await generateEmbedding(newIssue.description);
+const similar = await vectorSearch(embedding, {
+  table: 'issues',
+  threshold: 0.75,
+  limit: 5
+});
+```
+
+## Success Metrics
+
+| Metric | Target |
+|--------|--------|
+| Self-resolution rate | 25%+ |
+| Duplicate reduction | 50% |
+| Actionable insights/week | 5+ |
+| Team action on insights | 60% |
+
+## UX Considerations
+
+### Progressive Disclosure
+
+- Summary cards first (quick glance)
+- Details on scroll/click
+- Deep dives in separate views
+
+### Actionable Focus
+
+- Every insight has a suggested action
+- Clear next steps
+- Links to relevant resources
+
+### Real-time vs. Cached
+
+- Summary stats: Cached (refreshed hourly)
+- Duplicate detection: Real-time
+- Insights: Daily generation
+
+## Related
+
+- [Phase 3 Prototype](/support-app/prototypes/phase3-chat/) - Previous phase
+- [Phases Overview](/support-app/explanation/phases/) - Full roadmap
+- [AI Strategy](/support-app/explanation/ai-strategy/) - Technical approach
