@@ -191,6 +191,15 @@ The serverless architecture scales automatically:
 - **CloudFront**: Global CDN distribution
 - **S3**: Unlimited storage for attachments
 
+## Reference Implementation
+
+This project implements the standards defined in the 
+[Team Playbook](https://kandala05.github.io/team-playbook/):
+- Documentation-First approach
+- MANIFEST.md for strategic intent  
+- Diataxis structure
+- AI-augmented context via manifest.json
+
 ## Related Documents
 
 - [AI Strategy](/support-app/explanation/ai-strategy/) - AI integration approach
